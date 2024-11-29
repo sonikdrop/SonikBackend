@@ -10,6 +10,7 @@ interface AuthRequest extends Request {
 const verifyToken = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
+    console.log(token)
     if (token === undefined) return res.status(401).json({
         success: false,
         message: "send a valid token"

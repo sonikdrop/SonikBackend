@@ -2,10 +2,14 @@ import { ethers } from "ethers";
 import { Request, Response, NextFunction } from "express";
 import { errorResponse, successResponse } from "../utils/response";
 
+import * as dotenv from "dotenv";
+dotenv.config();
+
 import jwt from "jsonwebtoken";
+import appConfig from "../configs/app.config";
 
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_here';
+const JWT_SECRET = appConfig.JWT_SECRET as string;
 
 interface AuthRequest extends Request {
     address?: string;
