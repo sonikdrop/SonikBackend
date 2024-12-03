@@ -31,6 +31,19 @@ class UserController {
         }
     }
 
+    public static async getEligibleContractAddresses(req: Request, res: Response) {
+        try {
+            const {success, ...response} = await UserService.getEligibleContractAddresses(req.params.address);
+            if (success) {
+                return successResponse(200, res, "Eligible contract addresses fetched successfully", response.message);
+            } else {
+                return errorResponse(400, res, "Failed to fetch eligible contract addresses", response.message);
+            }
+        } catch (error) {
+            return errorResponse(500, res, "Internal server error", error as string);
+        }
+    }
+
 }
 
 export default UserController;

@@ -26,5 +26,6 @@ router.get("/protected", verifyToken as RequestHandler, (req: AuthRequest, res: 
  //Protected Route. 
 router.post('/add-bulk-user', addBulkUserValidator, verifyToken as RequestHandler, validationResponse, UserController.addBulkUser as any as RequestHandler);
 router.get('/get-user-by-address/:contractAddress/:address', getUserByAddressValidator, validationResponse, UserController.getUserByAddress as any as RequestHandler);
-    
+router.get('/get-eligible-contract-addresses/:address', verifyToken as RequestHandler, validationResponse, UserController.getEligibleContractAddresses as any as RequestHandler);
+
 export default router;
