@@ -24,7 +24,7 @@ class AuthController {
             const { address, signature, message } = req.body;
 
             if (!address || !signature || !message) {
-                return errorResponse(500, res, "Invalid payload", res.statusMessage);
+                return errorResponse(400, res, "Invalid payload", res.statusMessage);
               }
     
             // Verify signature using ethers.js
