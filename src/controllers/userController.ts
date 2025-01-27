@@ -3,11 +3,24 @@ import { errorResponse, successResponse } from "../utils/response";
 import UserService from "../services/userService";
 
 class UserController {
-
     public static async addBulkUser(req: Request, res: Response) {
         try {
-            const users = req.body;
-            const {success, ...response} = await UserService.addBulkUser(users);
+            const { proofs, contractAddress } = req.body;
+    
+            // Validate that proofs and contractAddress are present
+            if (!proofs || !contractAddress) {
+                return errorResponse(400, res, "Invalid request body", "Proofs and contractAddress are required");
+            }
+    
+            // Add contractAddress to each proof object
+            const updatedProofs = proofs.map((proof: any) => ({
+                ...proof,
+                contractAddress: contractAddress
+            }));
+    
+            // Pass the updated proofs to the service
+            const { success, ...response } = await UserService.addBulkUser(updatedProofs);
+    
             if (success) {
                 return successResponse(200, res, "Users added successfully", response.message);
             } else {
