@@ -31,6 +31,7 @@ class UserController {
         }
     }
 
+    // Get user by address
     public static async getUserByAddress(req: Request, res: Response) {
         try {
             const {success, ...response} = await UserService.getUserByAddress(req.params.contractAddress, req.params.address);
