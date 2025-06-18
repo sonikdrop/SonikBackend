@@ -14,7 +14,8 @@ class UserService {
 
     public static async getUserByAddress(contractAddress: string, address: string) {
         try {
-            const user = await User.findOne({ contractAddress, address });
+
+            const user = await User.findOne({ contractAddress: contractAddress.toLowerCase(), address: address.toLowerCase() });
             if (user) {
                 return successResponse(user);
             } else {
