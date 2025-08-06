@@ -2,7 +2,7 @@ import { Document } from "mongoose";
 
 export interface IUser extends Document {
         address: string;
-        amount: number;
+        amount: string;
         proofs: string[];
     contractAddress: string;
 }
