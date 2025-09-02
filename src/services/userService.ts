@@ -1,10 +1,21 @@
 import User from "../db/models/User";
 import { errorResponse, successResponse } from "../db/helpers/dbResponse";
+import mongoose from "mongoose";
 
 class UserService {
 
     public static async addBulkUser(users: any[]): Promise<any> {
         try {
+            // Check if database is connected
+            if (mongoose.connection.readyState !== 1) {
+                return errorResponse("Database connection not established", "Please ensure MongoDB is running and accessible");
+            }
+
+            // Validate input
+            if (!users || users.length === 0) {
+                return errorResponse("No users provided", "Users array is empty or undefined");
+            }
+
             // Transform the data to match the User schema
             const transformedUsers = users.map(user => ({
                 address: user.address,
@@ -17,7 +28,17 @@ class UserService {
             return successResponse(createdUsers);
         } catch (error: any) {
             console.error('Error in addBulkUser:', error);
-            return errorResponse("Failed to add users", error);
+            
+            // Handle specific MongoDB errors
+            if (error.name === 'ValidationError') {
+                return errorResponse("Validation failed", error.message);
+            } else if (error.name === 'MongoServerError') {
+                return errorResponse("Database operation failed", error.message);
+            } else if (error.name === 'MongoNetworkError') {
+                return errorResponse("Network error", "Unable to connect to database");
+            }
+            
+            return errorResponse("Failed to add users", error.message || error);
         }
     }
 
