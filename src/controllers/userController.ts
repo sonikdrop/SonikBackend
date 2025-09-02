@@ -19,12 +19,12 @@ class UserController {
             }));
     
             // Pass the updated proofs to the service
-            const { success, ...response } = await UserService.addBulkUser(updatedProofs);
+            const result = await UserService.addBulkUser(updatedProofs);
     
-            if (success) {
-                return successResponse(200, res, "Users added successfully", response.message);
+            if (result.success) {
+                return successResponse(200, res, "Users added successfully", result.message);
             } else {
-                return errorResponse(400, res, "Failed to add users", response.message);
+                return errorResponse(400, res, result.message, result.error);
             }
         } catch (error) {
             return errorResponse(500, res, "Internal server error", error as string);

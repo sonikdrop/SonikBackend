@@ -1,9 +1,9 @@
-const errorResponse = (message: string, error?: { message: any; }) => {
+const errorResponse = (message: string, error?: any) => {
     console.error(`Error message: ${error?.message || message}`);
     return {
         success: false,
         message,
-        error
+        error: error?.message || error || "Unknown error"
     }
 };
 

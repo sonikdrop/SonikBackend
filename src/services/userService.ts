@@ -5,10 +5,19 @@ class UserService {
 
     public static async addBulkUser(users: any[]): Promise<any> {
         try {
-            const createdUsers = await User.insertMany(users);
+            // Transform the data to match the User schema
+            const transformedUsers = users.map(user => ({
+                address: user.address,
+                amount: user.amount || "0",
+                proofs: user.proofs || [],
+                contractAddress: user.contractAddress
+            }));
+
+            const createdUsers = await User.insertMany(transformedUsers);
             return successResponse(createdUsers);
-        } catch (error) {
-            return errorResponse(error as string);
+        } catch (error: any) {
+            console.error('Error in addBulkUser:', error);
+            return errorResponse("Failed to add users", error);
         }
     }
 
