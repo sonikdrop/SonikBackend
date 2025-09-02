@@ -17,12 +17,13 @@ const mongooseOptions = {
     maxPoolSize: 10, // Maintain up to 10 socket connections
     minPoolSize: 5, // Maintain a minimum of 5 socket connections
     maxIdleTimeMS: 30000, // Close connections after 30 seconds of inactivity
-    bufferMaxEntries: 0, // Disable mongoose buffering
-    bufferCommands: false, // Disable mongoose buffering
 };
 
 const connectDB = async () => {
     try {
+        // Configure mongoose to disable buffering
+        mongoose.set('bufferCommands', false);
+        
         await mongoose.connect(MONGODB_URL, mongooseOptions);
         console.log("✅ Connected to MongoDB successfully");
         
